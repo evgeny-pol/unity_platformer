@@ -124,13 +124,10 @@ public class Creature : MonoBehaviour
         if (MoveDirection > 0)
         {
             transform.rotation = Quaternion.identity;
-            return;
         }
-
-        if (MoveDirection < 0)
+        else if (MoveDirection < 0)
         {
             transform.rotation = ReversedRotation;
-            return;
         }
     }
 
