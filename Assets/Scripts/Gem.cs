@@ -19,5 +19,8 @@ public class Gem : MonoBehaviour
     public void OnDisappeared()
     {
         Destroy(gameObject);
+
+        // todo game over
+        // todo game won
     }
 }
