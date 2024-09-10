@@ -17,15 +17,11 @@ public class WinLoseTracker : MonoBehaviour
     {
         if (_hero.GemsCount == _gemCountTarget)
             StopGame(_gameWonPanel);
-
-        // todo
     }
 
     private void OnHeroDead()
     {
         StopGame(_gameLostPanel);
-
-        // todo
     }
 
     private void StopGame(GameObject gameResultPanel)
@@ -33,6 +29,4 @@ public class WinLoseTracker : MonoBehaviour
         gameResultPanel.SetActive(true);
         Time.timeScale = 0;
     }
-
-    // todo
 }

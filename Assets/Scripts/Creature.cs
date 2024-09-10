@@ -60,8 +60,7 @@ public class Creature : MonoBehaviour
         if (HealthComponent.IsDead)
             return;
 
-        Vector2 currentVelocity = _rigidbody.velocity;
-        Vector2 newVelocity = currentVelocity;
+        Vector2 newVelocity = _rigidbody.velocity;
         newVelocity.x = _moveSpeed * MoveDirection;
 
         if (IsJumping && IsOnGround())
