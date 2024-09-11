@@ -1,27 +1,25 @@
-using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Inventory))]
 public class Hero : Creature
 {
-    [SerializeField, Min(0)] private int _gemsCount;
+    private Inventory _inventory;
 
-    public event Action GemsCountChanged;
+    public Inventory Inventory => _inventory;
 
-    public int GemsCount => _gemsCount;
+    protected override void Awake()
+    {
+        base.Awake();
+        _inventory = GetComponent<Inventory>();
+    }
 
     protected override void Update()
     {
         MoveDirection = Input.GetAxisRaw(InputConstants.HorizontalAxis);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown(InputConstants.JumpAxis))
             IsJumping = true;
 
         base.Update();
-    }
-
-    public void CollectGem(int count)
-    {
-        _gemsCount += count;
-        GemsCountChanged?.Invoke();
     }
 }

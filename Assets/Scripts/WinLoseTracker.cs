@@ -9,24 +9,32 @@ public class WinLoseTracker : MonoBehaviour
 
     private void Start()
     {
-        _hero.GemsCountChanged += OnGemsCountChanged;
+        _hero.Inventory.ItemCountChanged += OnItemCountChanged;
         _hero.Dead += OnHeroDead;
     }
 
-    private void OnGemsCountChanged()
+    private void OnDisable()
     {
-        if (_hero.GemsCount == _gemCountTarget)
-            StopGame(_gameWonPanel);
+        _hero.Inventory.ItemCountChanged -= OnItemCountChanged;
+        _hero.Dead -= OnHeroDead;
+    }
+
+    private void OnItemCountChanged(ItemType itemType, int newCount)
+    {
+        if (itemType == ItemType.Gem && newCount >= _gemCountTarget)
+            ShowGameResult(_gameWonPanel, true);
     }
 
     private void OnHeroDead()
     {
-        StopGame(_gameLostPanel);
+        ShowGameResult(_gameLostPanel, false);
     }
 
-    private void StopGame(GameObject gameResultPanel)
+    private void ShowGameResult(GameObject gameResultPanel, bool stopGame)
     {
         gameResultPanel.SetActive(true);
-        Time.timeScale = 0;
+
+        if (stopGame)
+            Time.timeScale = 0;
     }
 }

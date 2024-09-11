@@ -9,7 +9,6 @@ public class PatrolAI : MonoBehaviour
 
     private int _currentWaypointIndex;
     private int _waypointIndexIncrement = 1;
-    private Coroutine _patrolCoroutine;
     private Creature _creature;
 
     private Vector3 CurrentWaypoint => _waypoints[_currentWaypointIndex].position;
@@ -21,32 +20,27 @@ public class PatrolAI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_waypoints.Length > 0 && _patrolCoroutine == null)
-            _patrolCoroutine = StartCoroutine(Patrol());
+        if (_waypoints.Length > 0)
+            UpdateMovementDirection();
+        else
+            enabled = false;
     }
 
-    private IEnumerator Patrol()
+    private void Update()
     {
-        UpdateMovementDirection();
-        bool isPatrolling = true;
+        Vector3 toWaypoint = CurrentWaypoint - transform.position;
 
-        while (enabled && isPatrolling)
+        if (Mathf.Abs(toWaypoint.x) <= _waypointApproachDistance)
         {
-            Vector3 toWaypoint = CurrentWaypoint - transform.position;
-
-            if (Mathf.Abs(toWaypoint.x) <= _waypointApproachDistance)
+            if (_waypoints.Length == 1)
             {
-                if (_waypoints.Length == 1)
-                {
-                    isPatrolling = false;
-                    continue;
-                }
-
-                IncrementWaypointIndex();
-                UpdateMovementDirection();
+                _creature.StopMovement();
+                enabled = false;
+                return;
             }
 
-            yield return null;
+            IncrementWaypointIndex();
+            UpdateMovementDirection();
         }
     }
 

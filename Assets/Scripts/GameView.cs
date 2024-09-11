@@ -7,34 +7,36 @@ public class GameView : MonoBehaviour
     [SerializeField] private Text _healthText;
     [SerializeField] private Text _gemsCountText;
 
-    private void OnEnable()
+    private void Start()
     {
-        _hero.Hurt += UpdateHeroHealth;
+        _hero.HealthChanged += OnHealthChanged;
         _hero.Dead += OnHeroDead;
-        _hero.GemsCountChanged += UpdateHeroGems;
+        _hero.Inventory.ItemCountChanged += OnItemCountChanged;
+        OnHealthChanged(0);
+        UpdateHeroGems(_hero.Inventory.GetCount(ItemType.Gem));
     }
 
     private void OnDisable()
     {
-        _hero.Hurt -= UpdateHeroHealth;
+        _hero.HealthChanged -= OnHealthChanged;
         _hero.Dead -= OnHeroDead;
-        _hero.GemsCountChanged -= UpdateHeroGems;
+        _hero.Inventory.ItemCountChanged -= OnItemCountChanged;
     }
 
-    private void Start()
-    {
-        UpdateHeroHealth();
-        UpdateHeroGems();
-    }
-
-    private void UpdateHeroHealth()
+    private void OnHealthChanged(int changeAmount)
     {
         _healthText.text = _hero.Health.ToString();
     }
 
-    private void UpdateHeroGems()
+    private void OnItemCountChanged(ItemType itemType, int newCount)
     {
-        _gemsCountText.text = _hero.GemsCount.ToString();
+        if (itemType == ItemType.Gem)
+            UpdateHeroGems(newCount);
+    }
+
+    private void UpdateHeroGems(int newCount)
+    {
+        _gemsCountText.text = newCount.ToString();
     }
 
     private void OnHeroDead()

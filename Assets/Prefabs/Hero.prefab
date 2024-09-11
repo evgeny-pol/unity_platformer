@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4072806544051579787}
   - component: {fileID: 3105594081630311667}
+  - component: {fileID: 6920263191127314219}
   - component: {fileID: 1586441724495794636}
+  - component: {fileID: 5836237797473060084}
+  - component: {fileID: 3539409709271774547}
   - component: {fileID: 8659626317626600914}
   - component: {fileID: 974310389494630723}
   - component: {fileID: 7727602689403098689}
@@ -57,7 +60,18 @@ MonoBehaviour:
   _terrainLayers:
     serializedVersion: 2
     m_Bits: 8
-  _gemsCount: 0
+--- !u!114 &6920263191127314219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4052179234590414601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ff9bb708c597d4996c774ecafe7d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1586441724495794636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,6 +86,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 5
   _healthMax: 5
+--- !u!114 &5836237797473060084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4052179234590414601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 012b3b74920ab764090d044e265080e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3539409709271774547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4052179234590414601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d997424085db3469b29ef47c4f03b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &8659626317626600914
 SpriteRenderer:
   m_ObjectHideFlags: 0

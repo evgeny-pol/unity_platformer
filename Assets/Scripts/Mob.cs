@@ -1,22 +1,27 @@
+using Assets.Scripts.Utils;
 using UnityEngine;
 
 public class Mob : Creature
 {
     [SerializeField, Min(0)] private int _touchDamage = 1;
+    [SerializeField] private Cooldown _attackCooldown;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        DoDamage(collision);
+        Attack(collision);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        DoDamage(collision);
+        Attack(collision);
     }
 
-    private void DoDamage(Collision2D collision)
+    private void Attack(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Hero hero))
+        if (_attackCooldown.IsReady && collision.gameObject.TryGetComponent(out Hero hero))
+        {
             hero.Damage(_touchDamage);
+            _attackCooldown.Reset();
+        }
     }
 }

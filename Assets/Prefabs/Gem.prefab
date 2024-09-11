@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7431792017797011277}
-  - component: {fileID: 9215583067213196929}
+  - component: {fileID: 495162086288663223}
   - component: {fileID: 5594890354621323097}
   - component: {fileID: 5742112447254350685}
   - component: {fileID: 5148874516801028676}
@@ -35,7 +35,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9215583067213196929
+--- !u!114 &495162086288663223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,9 +44,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2354476820861508036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e0c650e873eea0428baef5f8ce5f134, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c95b3b42a5b1f44ca0d71b63ae6f8f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 0
   _count: 1
 --- !u!58 &5594890354621323097
 CircleCollider2D:
@@ -143,7 +144,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 835552647
-  m_SortingLayer: -3
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bd59bf2e866ed4529ae645637eb9c11d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
