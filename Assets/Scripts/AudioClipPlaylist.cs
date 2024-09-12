@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class AudioClipPlaylist : MonoBehaviour
@@ -7,6 +7,7 @@ public class AudioClipPlaylist : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip[] _clips;
 
+    private WaitForSeconds[] _clipLengths;
     private int _currentClipIndex;
     private Coroutine _playlistCoroutine;
 
@@ -22,6 +23,11 @@ public class AudioClipPlaylist : MonoBehaviour
                     (_clips[i], _clips[newIndex]) = (_clips[newIndex], _clips[i]);
             }
         }
+
+        _clipLengths = new WaitForSeconds[_clips.Length];
+
+        for (int i = 0; i < _clips.Length; ++i)
+            _clipLengths[i] = new WaitForSeconds(_clips[i].length);
     }
 
     private void OnEnable()
@@ -45,7 +51,7 @@ public class AudioClipPlaylist : MonoBehaviour
             AudioClip clip = _clips[_currentClipIndex];
             _audioSource.clip = clip;
             _audioSource.Play();
-            yield return new WaitForSeconds(clip.length);
+            yield return _clipLengths[_currentClipIndex];
             _currentClipIndex = ++_currentClipIndex % _clips.Length;
         }
     }

@@ -1052,8 +1052,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hero: {fileID: 1525064713}
   _gemCountTarget: 11
-  _gameWonPanel: {fileID: 1811511023}
-  _gameLostPanel: {fileID: 799971161}
+  _gameWonPanel: {fileID: 1811511027}
+  _gameLostPanel: {fileID: 799971165}
 --- !u!4 &751265669
 Transform:
   m_ObjectHideFlags: 0
@@ -1230,6 +1230,7 @@ GameObject:
   - component: {fileID: 799971162}
   - component: {fileID: 799971164}
   - component: {fileID: 799971163}
+  - component: {fileID: 799971165}
   m_Layer: 5
   m_Name: GameLostPanel
   m_TagString: Untagged
@@ -1295,6 +1296,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799971161}
   m_CullTransparentMesh: 1
+--- !u!114 &799971165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799971161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d946e3313c5f3f429d92744984b38c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &814732598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4715,6 +4728,7 @@ GameObject:
   - component: {fileID: 1811511024}
   - component: {fileID: 1811511026}
   - component: {fileID: 1811511025}
+  - component: {fileID: 1811511027}
   m_Layer: 5
   m_Name: GameWonPanel
   m_TagString: Untagged
@@ -4780,6 +4794,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811511023}
   m_CullTransparentMesh: 1
+--- !u!114 &1811511027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811511023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d946e3313c5f3f429d92744984b38c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1815850149
 PrefabInstance:
   m_ObjectHideFlags: 0

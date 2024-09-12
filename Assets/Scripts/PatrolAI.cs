@@ -8,7 +8,6 @@ public class PatrolAI : MonoBehaviour
     [SerializeField] private Transform[] _waypoints;
 
     private int _currentWaypointIndex;
-    private int _waypointIndexIncrement = 1;
     private Creature _creature;
 
     private Vector3 CurrentWaypoint => _waypoints[_currentWaypointIndex].position;
@@ -39,22 +38,9 @@ public class PatrolAI : MonoBehaviour
                 return;
             }
 
-            IncrementWaypointIndex();
+            _currentWaypointIndex = ++_currentWaypointIndex % _waypoints.Length;
             UpdateMovementDirection();
         }
-    }
-
-    private void IncrementWaypointIndex()
-    {
-        var nextWaypointIndex = _currentWaypointIndex + _waypointIndexIncrement;
-
-        if (nextWaypointIndex < 0 || nextWaypointIndex == _waypoints.Length)
-        {
-            _waypointIndexIncrement = -_waypointIndexIncrement;
-            nextWaypointIndex = _currentWaypointIndex + _waypointIndexIncrement;
-        }
-
-        _currentWaypointIndex = nextWaypointIndex;
     }
 
     private void UpdateMovementDirection()

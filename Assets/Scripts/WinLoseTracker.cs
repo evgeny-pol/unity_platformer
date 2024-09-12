@@ -4,8 +4,8 @@ public class WinLoseTracker : MonoBehaviour
 {
     [SerializeField] private Hero _hero;
     [SerializeField, Min(1)] private int _gemCountTarget = 1;
-    [SerializeField] private GameObject _gameWonPanel;
-    [SerializeField] private GameObject _gameLostPanel;
+    [SerializeField] private GameResultPanel _gameWonPanel;
+    [SerializeField] private GameResultPanel _gameLostPanel;
 
     private void Start()
     {
@@ -30,9 +30,9 @@ public class WinLoseTracker : MonoBehaviour
         ShowGameResult(_gameLostPanel, false);
     }
 
-    private void ShowGameResult(GameObject gameResultPanel, bool stopGame)
+    private void ShowGameResult(GameResultPanel gameResultPanel, bool stopGame)
     {
-        gameResultPanel.SetActive(true);
+        gameResultPanel.Show();
 
         if (stopGame)
             Time.timeScale = 0;
