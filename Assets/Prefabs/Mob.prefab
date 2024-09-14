@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alertClip: {fileID: 8300000, guid: 60155d2ba93818c4ba6097bb13758283, type: 3}
-  _alertVolume: 0.3
+  _alertVolume: 0.2
   _alertCooldown:
     _value: 2
 --- !u!50 &4788478867218880688

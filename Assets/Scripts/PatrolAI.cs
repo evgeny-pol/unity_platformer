@@ -8,19 +8,16 @@ public class PatrolAI : AI
 
     private int _currentWaypointIndex;
 
-    private Vector3 CurrentWaypoint => _waypoints[_currentWaypointIndex].position;
+    private Transform CurrentWaypoint => _waypoints[_currentWaypointIndex];
 
     private void OnEnable()
     {
-        if (_waypoints.Length > 0)
-            Creature.MoveTowards(CurrentWaypoint);
-        else
-            enabled = false;
+        MoveToCurrentWaypoint();
     }
 
     private void Update()
     {
-        Vector3 toWaypoint = CurrentWaypoint - transform.position;
+        Vector3 toWaypoint = CurrentWaypoint.position - transform.position;
 
         if (Mathf.Abs(toWaypoint.x) <= _waypointApproachDistance)
         {
@@ -32,8 +29,27 @@ public class PatrolAI : AI
             }
 
             _currentWaypointIndex = ++_currentWaypointIndex % _waypoints.Length;
-            Creature.MoveTowards(CurrentWaypoint);
+            MoveToCurrentWaypoint();
         }
+    }
+
+    private void MoveToCurrentWaypoint()
+    {
+        if (_currentWaypointIndex >= _waypoints.Length)
+        {
+            StopPatrol();
+            return;
+        }
+
+        Transform currentWaypoint = CurrentWaypoint;
+
+        if (currentWaypoint == null)
+        {
+            StopPatrol();
+            return;
+        }
+
+        Creature.MoveTowards(currentWaypoint.position);
     }
 
     public void StartPatrol()
