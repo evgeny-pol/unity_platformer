@@ -1,27 +1,68 @@
-using Assets.Scripts.Utils;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Mob : Creature
 {
-    [SerializeField, Min(0)] private int _touchDamage = 1;
-    [SerializeField] private Cooldown _attackCooldown;
+    [SerializeField] private Vision _vision;
+    [SerializeField] private SpriteRenderer _alertIcon;
+    [SerializeField, Min(0f)] private float _alertIconShowTime = 1f;
+    [SerializeField] private FollowAI _followAI;
+    [SerializeField] private PatrolAI _patrolAI;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public event Action HeroFound;
+    public event Action HeroLost;
+
+    private WaitForSeconds _alertIconDelay;
+    private Coroutine _alertIconCoroutine;
+
+    protected override void Awake()
     {
-        Attack(collision);
+        base.Awake();
+        _alertIconDelay = new WaitForSeconds(_alertIconShowTime);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    protected override void OnEnable()
     {
-        Attack(collision);
+        base.OnEnable();
+        _vision.ObjectFound += OnHeroFound;
+        _vision.ObjectLost += OnHeroLost;
     }
 
-    private void Attack(Collision2D collision)
+    protected override void OnDisable()
     {
-        if (_attackCooldown.IsReady && collision.gameObject.TryGetComponent(out Hero hero))
-        {
-            hero.Damage(_touchDamage);
-            _attackCooldown.Reset();
-        }
+        base.OnDisable();
+        _vision.ObjectFound -= OnHeroFound;
+        _vision.ObjectLost -= OnHeroLost;
+    }
+
+    private void OnHeroFound(Collider2D obj)
+    {
+        StartShowAlertIcon();
+        _patrolAI.StopPatrol();
+        _followAI.StartFollowing(obj.transform);
+        HeroFound?.Invoke();
+    }
+
+    private void OnHeroLost(Collider2D obj)
+    {
+        _followAI.StopFollowing();
+        _patrolAI.StartPatrol();
+        HeroLost?.Invoke();
+    }
+
+    private void StartShowAlertIcon()
+    {
+        if (_alertIconCoroutine != null)
+            StopCoroutine(_alertIconCoroutine);
+
+        _alertIconCoroutine = StartCoroutine(ShowAlertIcon());
+    }
+
+    private IEnumerator ShowAlertIcon()
+    {
+        _alertIcon.enabled = true;
+        yield return _alertIconDelay;
+        _alertIcon.enabled = false;
     }
 }

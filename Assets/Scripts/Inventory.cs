@@ -22,4 +22,22 @@ public class Inventory : MonoBehaviour
         _items[itemType] = count;
         ItemCountChanged?.Invoke(itemType, count);
     }
+
+    public void Remove(ItemType itemType, int removeCount)
+    {
+        if (removeCount <= 0)
+            return;
+
+        if (_items.TryGetValue(itemType, out int count))
+        {
+            count = Mathf.Max(count - removeCount, 0);
+
+            if (count == 0)
+                _items.Remove(itemType);
+            else
+                _items[itemType] = count;
+
+            ItemCountChanged?.Invoke(itemType, count);
+        }
+    }
 }

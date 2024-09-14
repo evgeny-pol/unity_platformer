@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
@@ -11,23 +10,22 @@ public class Creature : MonoBehaviour
 
     [SerializeField, Min(0f)] private float _moveSpeed = 1f;
     [SerializeField, Min(0f)] private float _jumpSpeed = 1f;
-    [SerializeField, Min(0f)] private float _invulnerabilityAfterHurt;
     [SerializeField, Min(0f)] private float _terrainCheckOffset = 1f;
     [SerializeField] private LayerMask _terrainLayers;
 
-    public event Action<int> HealthChanged;
+    public event Action<float> HealthChanged;
     public event Action Dead;
 
     protected float MoveDirection;
     protected bool IsJumping;
     protected Health HealthComponent;
 
-    private WaitForSeconds _damageInvulnerabilityDelay;
-    private Coroutine _damageInvulnerabilityCoroutine;
     private Rigidbody2D _rigidbody;
     private Collider2D _collider;
 
-    public int Health => HealthComponent.HealthCurrent;
+    public float Health => HealthComponent.HealthCurrent;
+
+    public float HealthMax => HealthComponent.HealthMax;
 
     public bool IsMoving => MoveDirection != 0;
 
@@ -38,16 +36,15 @@ public class Creature : MonoBehaviour
         HealthComponent = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        _damageInvulnerabilityDelay = new WaitForSeconds(_invulnerabilityAfterHurt);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         HealthComponent.HealthChanged += OnHealthChanged;
         HealthComponent.Dead += OnDead;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         HealthComponent.HealthChanged -= OnHealthChanged;
         HealthComponent.Dead -= OnDead;
@@ -73,6 +70,14 @@ public class Creature : MonoBehaviour
         UpdateRotation();
     }
 
+    public void MoveTowards(Vector3 position)
+    {
+        if (position.x > transform.position.x)
+            MoveRight();
+        else
+            MoveLeft();
+    }
+
     public void MoveRight()
     {
         MoveDirection = MovementDirection.Right;
@@ -93,7 +98,7 @@ public class Creature : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector3.down, _terrainCheckOffset, _terrainLayers).collider != null;
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(float damageAmount)
     {
         HealthComponent.Damage(damageAmount);
     }
@@ -103,13 +108,9 @@ public class Creature : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnHealthChanged(int changeAmount)
+    private void OnHealthChanged(float changeAmount)
     {
-        if (changeAmount < 0)
-        {
-            StartDamageInvulnerability();
-            HealthChanged?.Invoke(changeAmount);
-        }
+        HealthChanged?.Invoke(changeAmount);
     }
 
     private void OnDead()
@@ -130,24 +131,5 @@ public class Creature : MonoBehaviour
         {
             transform.rotation = ReversedRotation;
         }
-    }
-
-    private void StartDamageInvulnerability()
-    {
-        if (_invulnerabilityAfterHurt == 0)
-            return;
-
-        HealthComponent.IsInvulnerable = true;
-
-        if (_damageInvulnerabilityCoroutine != null)
-            StopCoroutine(_damageInvulnerabilityCoroutine);
-
-        _damageInvulnerabilityCoroutine = StartCoroutine(WaitDamageInvulnerability());
-    }
-
-    private IEnumerator WaitDamageInvulnerability()
-    {
-        yield return _damageInvulnerabilityDelay;
-        HealthComponent.IsInvulnerable = false;
     }
 }

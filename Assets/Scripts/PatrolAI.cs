@@ -1,26 +1,19 @@
-using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Creature))]
-public class PatrolAI : MonoBehaviour
+public class PatrolAI : AI
 {
     [SerializeField, Min(0f)] private float _waypointApproachDistance = 0.1f;
     [SerializeField] private Transform[] _waypoints;
 
     private int _currentWaypointIndex;
-    private Creature _creature;
 
     private Vector3 CurrentWaypoint => _waypoints[_currentWaypointIndex].position;
-
-    private void Awake()
-    {
-        _creature = GetComponent<Creature>();
-    }
 
     private void OnEnable()
     {
         if (_waypoints.Length > 0)
-            UpdateMovementDirection();
+            Creature.MoveTowards(CurrentWaypoint);
         else
             enabled = false;
     }
@@ -33,21 +26,23 @@ public class PatrolAI : MonoBehaviour
         {
             if (_waypoints.Length == 1)
             {
-                _creature.StopMovement();
+                Creature.StopMovement();
                 enabled = false;
                 return;
             }
 
             _currentWaypointIndex = ++_currentWaypointIndex % _waypoints.Length;
-            UpdateMovementDirection();
+            Creature.MoveTowards(CurrentWaypoint);
         }
     }
 
-    private void UpdateMovementDirection()
+    public void StartPatrol()
     {
-        if (CurrentWaypoint.x > transform.position.x)
-            _creature.MoveRight();
-        else
-            _creature.MoveLeft();
+        enabled = true;
+    }
+
+    public void StopPatrol()
+    {
+        enabled = false;
     }
 }

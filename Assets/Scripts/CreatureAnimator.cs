@@ -23,15 +23,15 @@ public class CreatureAnimator : MonoBehaviour
         StartCoroutine(UpdateAnimator());
     }
 
-    private void OnDead()
-    {
-        _animator.SetBool(AnimatorParams.IsDead, true);
-    }
-
-    private void OnHealthChanged(int changeAmount)
+    protected virtual void OnHealthChanged(float changeAmount)
     {
         if (changeAmount < 0)
             _animator.SetTrigger(AnimatorParams.IsHurt);
+    }
+
+    private void OnDead()
+    {
+        _animator.SetBool(AnimatorParams.IsDead, true);
     }
 
     private IEnumerator UpdateAnimator()

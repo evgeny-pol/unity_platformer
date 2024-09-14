@@ -1,11 +1,13 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameView : MonoBehaviour
 {
     [SerializeField] private Hero _hero;
-    [SerializeField] private Text _healthText;
-    [SerializeField] private Text _gemsCountText;
+    [SerializeField] private Image _healthImage;
+    [SerializeField] private ItemCountText[] _itemCountTexts;
 
     private void Start()
     {
@@ -13,7 +15,7 @@ public class GameView : MonoBehaviour
         _hero.Dead += OnHeroDead;
         _hero.Inventory.ItemCountChanged += OnItemCountChanged;
         OnHealthChanged(0);
-        UpdateHeroGems(_hero.Inventory.GetCount(ItemType.Gem));
+        UpdateItemCounts();
     }
 
     private void OnDisable()
@@ -23,24 +25,34 @@ public class GameView : MonoBehaviour
         _hero.Inventory.ItemCountChanged -= OnItemCountChanged;
     }
 
-    private void OnHealthChanged(int changeAmount)
+    private void OnHealthChanged(float changeAmount)
     {
-        _healthText.text = _hero.Health.ToString();
+        _healthImage.fillAmount = _hero.Health / _hero.HealthMax;
     }
 
     private void OnItemCountChanged(ItemType itemType, int newCount)
     {
-        if (itemType == ItemType.Gem)
-            UpdateHeroGems(newCount);
-    }
+        ItemCountText itemCountText = _itemCountTexts.FirstOrDefault(text => text.ItemType == itemType);
 
-    private void UpdateHeroGems(int newCount)
-    {
-        _gemsCountText.text = newCount.ToString();
+        if (itemCountText != null)
+            itemCountText.TextField.text = newCount.ToString();
     }
 
     private void OnHeroDead()
     {
-        _healthText.text = _gemsCountText.text = "0";
+        _healthImage.fillAmount = 0;
+    }
+
+    private void UpdateItemCounts()
+    {
+        foreach (ItemCountText itemCountText in _itemCountTexts)
+            itemCountText.TextField.text = _hero.Inventory.GetCount(itemCountText.ItemType).ToString();
+    }
+
+    [Serializable]
+    public class ItemCountText
+    {
+        [SerializeField] public ItemType ItemType;
+        [SerializeField] public Text TextField;
     }
 }
