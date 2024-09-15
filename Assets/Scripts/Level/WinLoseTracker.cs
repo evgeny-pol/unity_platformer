@@ -3,25 +3,26 @@ using UnityEngine;
 public class WinLoseTracker : MonoBehaviour
 {
     [SerializeField] private Hero _hero;
-    [SerializeField, Min(1)] private int _gemCountTarget = 1;
+    [SerializeField] private ItemType _winningItemType = ItemType.Gem;
+    [SerializeField, Min(1)] private int _winningItemCountTarget = 1;
     [SerializeField] private GameResultPanel _gameWonPanel;
     [SerializeField] private GameResultPanel _gameLostPanel;
 
     private void Start()
     {
-        _hero.Inventory.ItemCountChanged += OnItemCountChanged;
+        _hero.ItemCountChanged += OnItemCountChanged;
         _hero.Dead += OnHeroDead;
     }
 
     private void OnDisable()
     {
-        _hero.Inventory.ItemCountChanged -= OnItemCountChanged;
+        _hero.ItemCountChanged -= OnItemCountChanged;
         _hero.Dead -= OnHeroDead;
     }
 
-    private void OnItemCountChanged(ItemType itemType, int newCount)
+    private void OnItemCountChanged(ItemType itemType, int changeAmount)
     {
-        if (itemType == ItemType.Gem && newCount >= _gemCountTarget)
+        if (itemType == _winningItemType && _hero.GetItemCount(itemType) >= _winningItemCountTarget)
             ShowGameResult(_gameWonPanel, true);
     }
 

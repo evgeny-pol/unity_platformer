@@ -17,6 +17,6 @@ public class TouchAttacker : MonoBehaviour
     private void Attack(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent(out Creature creature))
-            creature.Damage(_touchDamage * Time.fixedDeltaTime);
+            creature.TakeDamage(_touchDamage * Time.fixedDeltaTime);
     }
 }

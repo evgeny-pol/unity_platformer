@@ -7,17 +7,26 @@ public class CollectableItem : MonoBehaviour
     [SerializeField] private ItemType _type;
     [SerializeField, Min(1)] private int _count = 1;
 
+    private Collider2D _collider;
+    private Animator _animator;
+
     public ItemType Type => _type;
 
     public int Count => _count;
 
-    public void Collect()
+    private void Awake()
     {
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<Animator>().SetBool(AnimatorParams.IsCollected, true);
+        _collider = GetComponent<Collider2D>();
+        _animator = GetComponent<Animator>();
     }
 
-    public void OnDisappeared()
+    public void Collect()
+    {
+        _collider.enabled = false;
+        _animator.SetBool(AnimatorParams.IsCollected, true);
+    }
+
+    public void Disappear()
     {
         Destroy(gameObject);
     }

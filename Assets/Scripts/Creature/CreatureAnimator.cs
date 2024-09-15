@@ -23,6 +23,12 @@ public class CreatureAnimator : MonoBehaviour
         StartCoroutine(UpdateAnimator());
     }
 
+    private void OnDisable()
+    {
+        _creature.HealthChanged -= OnHealthChanged;
+        _creature.Dead -= OnDead;
+    }
+
     protected virtual void OnHealthChanged(float changeAmount)
     {
         if (changeAmount < 0)

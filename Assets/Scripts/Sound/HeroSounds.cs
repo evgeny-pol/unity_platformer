@@ -22,12 +22,17 @@ public class HeroSounds : MonoBehaviour
 
     private void Start()
     {
-        _hero.Inventory.ItemCountChanged += OnItemCountChanged;
+        _hero.ItemCountChanged += OnItemCountChanged;
     }
 
-    private void OnItemCountChanged(ItemType itemType, int newCount)
+    private void OnDisable()
     {
-        if (_itemClipsDict.TryGetValue(itemType, out ItemClip itemClip))
+        _hero.ItemCountChanged -= OnItemCountChanged;
+    }
+
+    private void OnItemCountChanged(ItemType itemType, int changeAmount)
+    {
+        if (changeAmount > 0 && _itemClipsDict.TryGetValue(itemType, out ItemClip itemClip))
             _audioSource.PlayOneShot(itemClip.AudioClip, itemClip.Volume);
     }
 

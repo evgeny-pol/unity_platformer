@@ -6,15 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Creature : MonoBehaviour
 {
-    private static readonly Quaternion ReversedRotation = Quaternion.Euler(0, 180, 0);
-
     [SerializeField, Min(0f)] private float _moveSpeed = 1f;
     [SerializeField, Min(0f)] private float _jumpSpeed = 1f;
     [SerializeField, Min(0f)] private float _terrainCheckOffset = 1f;
     [SerializeField] private LayerMask _terrainLayers;
-
-    public event Action<float> HealthChanged;
-    public event Action Dead;
 
     protected float MoveDirection;
     protected bool IsJumping;
@@ -23,9 +18,12 @@ public class Creature : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Collider2D _collider;
 
-    public float Health => HealthComponent.HealthCurrent;
+    public event Action<float> HealthChanged;
+    public event Action Dead;
 
-    public float HealthMax => HealthComponent.HealthMax;
+    public float Health => HealthComponent.Current;
+
+    public float HealthMax => HealthComponent.Max;
 
     public bool IsMoving => MoveDirection != 0;
 
@@ -40,13 +38,13 @@ public class Creature : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        HealthComponent.HealthChanged += OnHealthChanged;
+        HealthComponent.Changed += OnHealthChanged;
         HealthComponent.Dead += OnDead;
     }
 
     protected virtual void OnDisable()
     {
-        HealthComponent.HealthChanged -= OnHealthChanged;
+        HealthComponent.Changed -= OnHealthChanged;
         HealthComponent.Dead -= OnDead;
     }
 
@@ -98,12 +96,17 @@ public class Creature : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector3.down, _terrainCheckOffset, _terrainLayers).collider != null;
     }
 
-    public void Damage(float damageAmount)
+    public void TakeDamage(float damageAmount)
     {
-        HealthComponent.Damage(damageAmount);
+        HealthComponent.TakeDamage(damageAmount);
     }
 
-    public void OnDisappeared()
+    public void TakeHealing(float healAmount)
+    {
+        HealthComponent.TakeHealing(healAmount);
+    }
+
+    public void Disappear()
     {
         Destroy(gameObject);
     }
@@ -129,7 +132,7 @@ public class Creature : MonoBehaviour
         }
         else if (MoveDirection < 0)
         {
-            transform.rotation = ReversedRotation;
+            transform.rotation = QuaternionConstants.ReversedY;
         }
     }
 }

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Creature))]
 public class FollowAI : AI
 {
     [SerializeField] private Transform _target;

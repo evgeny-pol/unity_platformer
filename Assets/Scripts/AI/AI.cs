@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Creature))]
 public class AI : MonoBehaviour
 {
     protected Creature Creature;

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Creature))]
 public class PatrolAI : AI
 {
     [SerializeField, Min(0f)] private float _waypointApproachDistance = 0.1f;
@@ -33,6 +32,16 @@ public class PatrolAI : AI
         }
     }
 
+    public void StartPatrol()
+    {
+        enabled = true;
+    }
+
+    public void StopPatrol()
+    {
+        enabled = false;
+    }
+
     private void MoveToCurrentWaypoint()
     {
         if (_currentWaypointIndex >= _waypoints.Length)
@@ -50,15 +59,5 @@ public class PatrolAI : AI
         }
 
         Creature.MoveTowards(currentWaypoint.position);
-    }
-
-    public void StartPatrol()
-    {
-        enabled = true;
-    }
-
-    public void StopPatrol()
-    {
-        enabled = false;
     }
 }

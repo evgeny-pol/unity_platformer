@@ -13,7 +13,7 @@ public class GameView : MonoBehaviour
     {
         _hero.HealthChanged += OnHealthChanged;
         _hero.Dead += OnHeroDead;
-        _hero.Inventory.ItemCountChanged += OnItemCountChanged;
+        _hero.ItemCountChanged += OnItemCountChanged;
         OnHealthChanged(0);
         UpdateItemCounts();
     }
@@ -22,7 +22,7 @@ public class GameView : MonoBehaviour
     {
         _hero.HealthChanged -= OnHealthChanged;
         _hero.Dead -= OnHeroDead;
-        _hero.Inventory.ItemCountChanged -= OnItemCountChanged;
+        _hero.ItemCountChanged -= OnItemCountChanged;
     }
 
     private void OnHealthChanged(float changeAmount)
@@ -30,12 +30,12 @@ public class GameView : MonoBehaviour
         _healthImage.fillAmount = _hero.Health / _hero.HealthMax;
     }
 
-    private void OnItemCountChanged(ItemType itemType, int newCount)
+    private void OnItemCountChanged(ItemType itemType, int changeAmount)
     {
         ItemCountText itemCountText = _itemCountTexts.FirstOrDefault(text => text.ItemType == itemType);
 
         if (itemCountText != null)
-            itemCountText.TextField.text = newCount.ToString();
+            itemCountText.TextField.text = _hero.GetItemCount(itemType).ToString();
     }
 
     private void OnHeroDead()
@@ -46,7 +46,7 @@ public class GameView : MonoBehaviour
     private void UpdateItemCounts()
     {
         foreach (ItemCountText itemCountText in _itemCountTexts)
-            itemCountText.TextField.text = _hero.Inventory.GetCount(itemCountText.ItemType).ToString();
+            itemCountText.TextField.text = _hero.GetItemCount(itemCountText.ItemType).ToString();
     }
 
     [Serializable]
