@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
@@ -6,10 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Creature : MonoBehaviour
 {
+    [SerializeField] Transform _visuals;
     [SerializeField, Min(0f)] private float _moveSpeed = 1f;
     [SerializeField, Min(0f)] private float _jumpSpeed = 1f;
-    [SerializeField, Min(0f)] private float _terrainCheckOffset = 1f;
-    [SerializeField] private LayerMask _terrainLayers;
+    [SerializeField] private ContactFilter2D _groundContactFilter;
+    [SerializeField, Min(0f)] private float _deathDestroyDelay = 1f;
 
     protected float MoveDirection;
     protected bool IsJumping;
@@ -38,13 +40,13 @@ public class Creature : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        HealthComponent.Changed += OnHealthChanged;
+        HealthComponent.CurrentChanged += OnHealthChanged;
         HealthComponent.Dead += OnDead;
     }
 
     protected virtual void OnDisable()
     {
-        HealthComponent.Changed -= OnHealthChanged;
+        HealthComponent.CurrentChanged -= OnHealthChanged;
         HealthComponent.Dead -= OnDead;
     }
 
@@ -93,7 +95,7 @@ public class Creature : MonoBehaviour
 
     public bool IsOnGround()
     {
-        return Physics2D.Raycast(transform.position, Vector3.down, _terrainCheckOffset, _terrainLayers).collider != null;
+        return _rigidbody.IsTouching(_groundContactFilter);
     }
 
     public void TakeDamage(float damageAmount)
@@ -104,11 +106,6 @@ public class Creature : MonoBehaviour
     public void TakeHealing(float healAmount)
     {
         HealthComponent.TakeHealing(healAmount);
-    }
-
-    public void Disappear()
-    {
-        Destroy(gameObject);
     }
 
     private void OnHealthChanged(float changeAmount)
@@ -122,17 +119,14 @@ public class Creature : MonoBehaviour
         _rigidbody.gravityScale = 0;
         _rigidbody.velocity = Vector2.zero;
         Dead?.Invoke();
+        Destroy(gameObject, _deathDestroyDelay);
     }
 
     private void UpdateRotation()
     {
         if (MoveDirection > 0)
-        {
-            transform.rotation = Quaternion.identity;
-        }
+            _visuals.rotation = Quaternion.identity;
         else if (MoveDirection < 0)
-        {
-            transform.rotation = QuaternionConstants.ReversedY;
-        }
+            _visuals.rotation = QuaternionConstants.ReversedY;
     }
 }

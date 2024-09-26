@@ -6,7 +6,7 @@ public class Health : MonoBehaviour
     [SerializeField, Min(1f)] private float _current = 1f;
     [SerializeField, Min(1f)] private float _max = 1f;
 
-    public event Action<float> Changed;
+    public event Action<float> CurrentChanged;
     public event Action Dead;
 
     public float Current => _current;
@@ -28,11 +28,10 @@ public class Health : MonoBehaviour
             return;
 
         _current = Mathf.Max(_current - damageAmount, 0);
+        CurrentChanged?.Invoke(-damageAmount);
 
         if (_current == 0)
             Dead?.Invoke();
-        else
-            Changed?.Invoke(-damageAmount);
     }
 
     public void TakeHealing(float healAmount)
@@ -46,7 +45,7 @@ public class Health : MonoBehaviour
             return;
 
         _current += healAmount;
-        Changed?.Invoke(healAmount);
+        CurrentChanged?.Invoke(healAmount);
     }
 
     public void Kill()

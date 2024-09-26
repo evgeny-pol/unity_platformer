@@ -1,18 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Creature))]
 [RequireComponent(typeof(Animator))]
 public class CreatureAnimator : MonoBehaviour
 {
+    [SerializeField] private Creature _creature;
     [SerializeField, Min(0f)] private float _animatorUpdateInterval = 0.1f;
 
-    private Creature _creature;
     private Animator _animator;
 
     private void Awake()
     {
-        _creature = GetComponent<Creature>();
         _animator = GetComponent<Animator>();
     }
 
