@@ -13,7 +13,7 @@ public class ItemHealer : MonoBehaviour
         _hero = GetComponent<Hero>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         _hero.ItemCountChanged += OnItemCountChanged;
     }

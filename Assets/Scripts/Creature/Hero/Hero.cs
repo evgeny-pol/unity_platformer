@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Inventory))]
 public class Hero : Creature
 {
+    [SerializeField] private HeroAbility[] _abilities;
+
     private Inventory _inventory;
 
     public event Action<ItemType, int> ItemCountChanged;
@@ -33,6 +35,10 @@ public class Hero : Creature
         if (Input.GetButtonDown(InputAxis.Jump))
             IsJumping = true;
 
+        foreach (HeroAbility ability in _abilities)
+            if (Input.GetButtonDown(ability.HotkeyAxis))
+                ability.Ability.TryActivate();
+
         base.Update();
     }
 
@@ -46,5 +52,24 @@ public class Hero : Creature
         _inventory.Remove(itemType, removeCount);
     }
 
+    protected override void OnDead()
+    {
+        foreach (HeroAbility ability in _abilities)
+            ability.Ability.Disable();
+
+        base.OnDead();
+    }
+
     private void OnItemCountChanged(ItemType itemType, int changeAmount) => ItemCountChanged?.Invoke(itemType, changeAmount);
+
+    [Serializable]
+    public class HeroAbility
+    {
+        [InputAxis][SerializeField] private string _hotkeyAxis;
+        [SerializeField] private Ability _ability;
+
+        public string HotkeyAxis => _hotkeyAxis;
+
+        public Ability Ability => _ability;
+    }
 }

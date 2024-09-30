@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public event Action<ItemType, int> ItemCountChanged;
-
     private readonly Dictionary<ItemType, int> _items = new();
+
+    public event Action<ItemType, int> ItemCountChanged;
 
     public int GetCount(ItemType itemType)
     {

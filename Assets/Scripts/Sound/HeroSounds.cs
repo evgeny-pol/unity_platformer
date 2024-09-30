@@ -39,8 +39,14 @@ public class HeroSounds : MonoBehaviour
     [Serializable]
     public class ItemClip
     {
-        [SerializeField] public ItemType ItemType;
-        [SerializeField] public AudioClip AudioClip;
-        [SerializeField, Min(0f)] public float Volume = 1f;
+        [SerializeField] private ItemType _itemType;
+        [SerializeField] private AudioClip _audioClip;
+        [SerializeField, Min(0f)] private float _volume = 1f;
+
+        public ItemType ItemType => _itemType;
+
+        public AudioClip AudioClip => _audioClip;
+
+        public float Volume => _volume;
     }
 }

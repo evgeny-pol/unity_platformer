@@ -36,7 +36,11 @@ public class GameView : MonoBehaviour
     [Serializable]
     public class ItemCountText
     {
-        [SerializeField] public ItemType ItemType;
-        [SerializeField] public Text TextField;
+        [SerializeField] private ItemType _itemType;
+        [SerializeField] private Text _textField;
+
+        public ItemType ItemType => _itemType;
+
+        public Text TextField => _textField;
     }
 }

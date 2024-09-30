@@ -108,18 +108,18 @@ public class Creature : MonoBehaviour
         HealthComponent.TakeHealing(healAmount);
     }
 
-    private void OnHealthChanged(float changeAmount)
-    {
-        HealthChanged?.Invoke(changeAmount);
-    }
-
-    private void OnDead()
+    protected virtual void OnDead()
     {
         _collider.enabled = false;
         _rigidbody.gravityScale = 0;
         _rigidbody.velocity = Vector2.zero;
         Dead?.Invoke();
         Destroy(gameObject, _deathDestroyDelay);
+    }
+
+    private void OnHealthChanged(float changeAmount)
+    {
+        HealthChanged?.Invoke(changeAmount);
     }
 
     private void UpdateRotation()

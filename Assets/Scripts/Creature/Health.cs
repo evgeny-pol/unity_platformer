@@ -22,16 +22,19 @@ public class Health : MonoBehaviour
         _current = MathF.Min(_current, _max);
     }
 
-    public void TakeDamage(float damageAmount)
+    public float TakeDamage(float damageAmount)
     {
         if (damageAmount <= 0 || IsDead)
-            return;
+            return 0;
 
-        _current = Mathf.Max(_current - damageAmount, 0);
+        damageAmount = Mathf.Min(damageAmount, _current);
+        _current -= damageAmount;
         CurrentChanged?.Invoke(-damageAmount);
 
         if (_current == 0)
             Dead?.Invoke();
+
+        return damageAmount;
     }
 
     public void TakeHealing(float healAmount)

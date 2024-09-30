@@ -41,6 +41,9 @@ TagManager:
   - name: Background
     uniqueID: 5197809
     locked: 0
+  - name: Aura
+    uniqueID: 2495242453
+    locked: 0
   - name: Item
     uniqueID: 835552647
     locked: 0
